@@ -5,6 +5,7 @@ import { DBConnect } from "./db";
 import { startRaceAggregator } from "./race-aggregator";
 import { broadcastToClient } from "./client/ws-broadcast";
 import { initState } from "./race-aggregator/state";
+import config from "./config";
 
 export default async function initServer() {
   const app = express();
@@ -20,7 +21,9 @@ export default async function initServer() {
   await DBConnect();
   await initState();
 
-  startRaceAggregator("wss://www.apex-timing.com:8533/");
+  if (config["listen"]) {
+    startRaceAggregator(config["telemetry_url"]);
+  }
 
   return httpServer;
 }

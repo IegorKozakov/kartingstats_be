@@ -1,5 +1,6 @@
 import createServer from "./server";
+import config from "./config";
 
 createServer().then((server) => {
-  server.listen(1234);
+  server.listen(config["port"]);
 });
