@@ -13,6 +13,7 @@ export function processMessage(data: any) {
 }
 
 function processInitMessage(message: string[]) {
+  console.log("processInitMessage");
   const grid = message.filter((item: any) => item.includes("grid|"));
   const table = grid[0].split("||")[1];
 
@@ -49,7 +50,7 @@ function processInitMessage(message: string[]) {
   rows.forEach((row) => {
     let dataId = row.getAttribute("data-id");
     let isPit =
-      row.querySelector(`td[data-id="${dataId}c2"]`)?.getAttribute("class") ??
+      row.querySelector(`td[data-id="${dataId}c1"]`)?.getAttribute("class") ??
       "";
     let teamName =
       row.querySelector(`td[data-id="${dataId}${driverCellNumber}"]`)
@@ -73,10 +74,6 @@ function processInitMessage(message: string[]) {
     if (!kart) {
       console.error("Can not define kart number");
       return false;
-    }
-
-    if (kart == "69") {
-      console.log(isPit && isPit == "si");
     }
 
     initialData[kart] = {

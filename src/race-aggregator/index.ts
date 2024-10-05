@@ -6,6 +6,7 @@ import { aggregate } from "./aggregator";
 export async function startRaceAggregator(url: string) {
   setInterval(async () => {
     const data = await new Promise<any>(async (resolve) => {
+      console.log("init aggregator");
       const ws = await init(url);
 
       ws.on("message", (event) => {
@@ -14,6 +15,7 @@ export async function startRaceAggregator(url: string) {
         resolve(data);
       });
     });
+
     if (data) {
       aggregate(data);
     }

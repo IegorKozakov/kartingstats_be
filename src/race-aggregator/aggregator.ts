@@ -25,6 +25,23 @@ export async function aggregate(data: any) {
       };
     }
 
+    if (teamData.isPit !== state.teams[teamNo].isPit) {
+      state.teams[teamNo].isPit = teamData.isPit;
+      if (teamData.isPit) {
+        state.pitlane.push({
+          kart,
+          teamName: state.teams[teamNo].teamName,
+          averageLapTime: state.teams[teamNo].averageLapTime,
+          bestStintTime: state.teams[teamNo].bestStintTime,
+          stint: state.teams[teamNo].stint,
+          parked: new Date(),
+        });
+      } else {
+        state.teams[teamNo].bestStintTime = Infinity;
+      }
+      isUpdated = true;
+    }
+
     if (teamData.lapsAmount !== state.teams[teamNo].lapsAmount) {
       state.teams[teamNo].lapsStat.push(lapTime);
       const lastLaps = state.teams[teamNo].lapsStat.slice(-6);
@@ -47,28 +64,13 @@ export async function aggregate(data: any) {
       isUpdated = true;
     }
 
-    if (teamData.isPit !== state.teams[teamNo].isPit) {
-      state.teams[teamNo].isPit = teamData.isPit;
-      if (teamData.isPit) {
-        state.pitlane.push({
-          kart,
-          teamName: state.teams[teamNo].teamName,
-          averageLapTime: state.teams[teamNo].averageLapTime,
-          bestStintTime: state.teams[teamNo].bestStintTime,
-          stint: state.teams[teamNo].stint,
-          parked: new Date(),
-        });
-      } else {
-        state.teams[teamNo].bestStintTime = Infinity;
-      }
-      isUpdated = true;
-    }
-
     if (teamData.stint !== state.teams[teamNo].stint) {
       state.teams[teamNo].stint = teamData.stint;
       isUpdated = true;
     }
   });
+
+  console.log(state.pitlane);
 
   if (isUpdated) {
     state.lastUpdatedTS = timeStamp;
