@@ -11,7 +11,12 @@ export const state: {
 };
 
 export async function initState() {
-  const lastRecord = await RaceState.findOne().sort({ lastUpdatedTS: -1 });
+  let lastRecord = null;
+  try {
+    lastRecord = await RaceState.findOne().sort({ lastUpdatedTS: -1 });
+  } catch (error) {
+    console.log(error);
+  }
 
   if (lastRecord) {
     state.lastUpdatedTS = lastRecord.lastUpdatedTS;
